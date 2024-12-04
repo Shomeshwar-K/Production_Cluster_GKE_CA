@@ -1,30 +1,26 @@
-kind: Ingress
 apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: supplychainvisibility-ingress
   namespace: supplychainvisibility
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/proxy-body-size: '0'
-    nginx.ingress.kubernetes.io/proxy-read-timeout: '600'
-    nginx.ingress.kubernetes.io/proxy-send-timeout: '600'
-    # nginx.ingress.kubernetes.io/server-snippet: |
-    #   client_header_buffer_size 100k;
-    #   large_client_header_buffers 4 100k;
-    nginx.ingress.kubernetes.io/session-cookie-expires: '172800'
-    nginx.ingress.kubernetes.io/session-cookie-max-age: '172800'
-    nginx.ingress.kubernetes.io/session-cookie-path: /
-    nginx.ingress.kubernetes.io/session-cookie-samesite: None
-    nginx.ingress.kubernetes.io/session-cookie-secure: 'true'
-    nginx.ingress.kubernetes.io/use-regex: 'true'
-    nginx.ingress.kubernetes.io/websocket-services: notificationhandlerconsumer,supplierengagementsocket
+    cert-manager.io/cluster-issuer: letsencrypt # Cert-manager integration for Let's Encrypt
+    kubernetes.io/ingress.class: nginx # Specify NGINX Ingress class
+    nginx.ingress.kubernetes.io/affinity: cookie # Enable session affinity (sticky sessions)
+    nginx.ingress.kubernetes.io/proxy-body-size: '0' # Allow unlimited body size
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '600' # Proxy read timeout (600 seconds)
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '600' # Proxy send timeout (600 seconds)
+    nginx.ingress.kubernetes.io/session-cookie-expires: '172800' # Session cookie expiry (2 days)
+    nginx.ingress.kubernetes.io/session-cookie-max-age: '172800' # Max age for session cookies (2 days)
+    nginx.ingress.kubernetes.io/session-cookie-path: / # Path for session cookies
+    nginx.ingress.kubernetes.io/session-cookie-samesite: None # SameSite cookie policy
+    nginx.ingress.kubernetes.io/session-cookie-secure: 'true' # Secure cookie (only sent over HTTPS)
+    nginx.ingress.kubernetes.io/use-regex: 'true' # Enable use of regular expressions for paths
+    nginx.ingress.kubernetes.io/websocket-services: notificationhandlerconsumer,supplierengagementsocket # WebSocket support
   managedFields:
     - manager: nginx-ingress-controller
       operation: Update
       apiVersion: networking.k8s.io/v1
-      # time: '2024-09-17T07:08:13Z'
       fieldsType: FieldsV1
       fieldsV1:
         f:status:
@@ -34,7 +30,6 @@ metadata:
     - manager: Mozilla
       operation: Update
       apiVersion: networking.k8s.io/v1
-      # time: '2024-10-22T19:44:22Z'
       fieldsType: FieldsV1
       fieldsV1:
         f:metadata:
@@ -46,7 +41,6 @@ metadata:
             f:nginx.ingress.kubernetes.io/proxy-body-size: {}
             f:nginx.ingress.kubernetes.io/proxy-read-timeout: {}
             f:nginx.ingress.kubernetes.io/proxy-send-timeout: {}
-            f:nginx.ingress.kubernetes.io/server-snippet: {}
             f:nginx.ingress.kubernetes.io/session-cookie-expires: {}
             f:nginx.ingress.kubernetes.io/session-cookie-max-age: {}
             f:nginx.ingress.kubernetes.io/session-cookie-path: {}
@@ -59,19 +53,19 @@ metadata:
           f:rules: {}
           f:tls: {}
 spec:
-  ingressClassName: nginx
-  # tls:
-  #   - hosts:
-  #       - staging.golive.settyl.com
-  #     secretName: tls-secret
+  ingressClassName: nginx # Ensure the NGINX Ingress controller is used
+  tls:
+    - hosts:
+        - gke.golive.settyl.com # Specify the host for TLS
+      secretName: tls-secret # Replace with your TLS secret
   rules:
-    - host: gke.golive.settyl.com
+    - host: gke.golive.settyl.com # Define the hostname for routing
       http:
         paths:
-          - path: /api/healthcheck
+          - path: /api/healthcheck # Define the path for health check
             pathType: Prefix
             backend:
               service:
-                name: configmanagementapi
+                name: configmanagementapi # The backend service to route to
                 port:
-                  number: 8000
+                  number: 8000 # The service port
