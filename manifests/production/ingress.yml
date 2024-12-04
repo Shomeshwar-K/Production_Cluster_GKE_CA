@@ -75,4 +75,3 @@ spec:
                 name: configmanagementapi
                 port:
                   number: 8000
-          
