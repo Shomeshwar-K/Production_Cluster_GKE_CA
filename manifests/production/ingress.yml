@@ -68,4 +68,4 @@ spec:
               service:
                 name: configmanagementapi # The backend service to route to
                 port:
-                  number: 8000 # The service port
+                  number: 8080 # The service port
