@@ -29,7 +29,7 @@ app.use(
 );
 app.use(express.urlencoded({ limit: "50mb", extended: false }));
 
-app.get("/api/healthcheck", async (req, res) => {
+app.get("/api/", async (req, res) => {
   res.json({
     status: "ok",
     message: "Server Running - v0.0.1",
