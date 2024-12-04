@@ -4,8 +4,7 @@ metadata:
   name: supplychainvisibility-ingress
   namespace: supplychainvisibility
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
+    kubernetes.io/ingress.class: nginx
     networking.gke.io/managed-certificates: "supplychainvisibility-cert"
     cert-manager.io/cluster-issuer: letsencrypt # Added annotation for cert-manager
 spec:
