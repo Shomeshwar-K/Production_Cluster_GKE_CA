@@ -62,7 +62,7 @@ spec:
     - host: gke.golive.settyl.com # Define the hostname for routing
       http:
         paths:
-          - path: /api/healthcheck # Define the path for health check
+          - path: /healthz # Define the path for health check
             pathType: Prefix
             backend:
               service:
